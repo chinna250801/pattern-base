@@ -1,0 +1,73 @@
+[
+  {
+    "id": "pattern-1708600000000",
+    "title": "Fix TypeScript Generic Inference in React useState",
+    "description": "TypeScript can't infer the generic type when useState is initialized with null. Getting error: 'Type instantiation is excessively deep and possibly infinite'",
+    "tool": "claude-code",
+    "prompt": "I'm getting 'Type instantiation is excessively deep and possibly infinite' when using useState with a complex generic type. The type is inferred as unknown instead of MyInterface.",
+    "solution": "Explicitly type the useState generic:\n\nconst [data, setData] = useState<MyInterface | null>(null);\n\nNOT:\nconst [data, setData] = useState(null); // type inferred as null\n\nFor complex nested types, use a type helper:\ntype Nullable<T> = T | null;\nconst [data, setData] = useState<Nullable<MyInterface>>(null);",
+    "tags": ["typescript", "react", "hooks", "generics", "debugging"],
+    "outcome": "success",
+    "reuseCount": 4,
+    "createdAt": 1708600000000,
+    "updatedAt": 1709100000000,
+    "source": "local"
+  },
+  {
+    "id": "pattern-1708700000000",
+    "title": "Vite Build Fails with 'Cannot find module' for Path Aliases",
+    "description": "Vite can't resolve path aliases like '@/components' during build, but works fine in dev. Error: Cannot find module '@/components/Button' or its corresponding type declarations.",
+    "tool": "cursor",
+    "prompt": "My Vite build is failing because it can't resolve path aliases. The app works in dev but not in production build.",
+    "solution": "1. Update vite.config.ts:\n   resolve: {\n     alias: {\n       '@': path.resolve(__dirname, './src')\n     }\n   }\n\n2. Update tsconfig.json:\n   {\n     \"compilerOptions\": {\n       \"baseUrl\": \".\",\n       \"paths\": {\n         \"@/*\": [\"src/*\"]\n       }\n     }\n   }\n\n3. Install @types/node if not present",
+    "tags": ["vite", "typescript", "build", "configuration"],
+    "outcome": "success",
+    "reuseCount": 2,
+    "createdAt": 1708700000000,
+    "updatedAt": 1708800000000,
+    "source": "local"
+  },
+  {
+    "id": "pattern-1708800000000",
+    "title": "React useEffect Runs Twice in Strict Mode (Cleanup Wrong)",
+    "description": "useEffect with subscription keeps re-subscribing. Memory leak warning. Not cleaning up properly on unmount.",
+    "tool": "claude-code",
+    "prompt": "My useEffect is creating multiple subscriptions. How do I properly clean up?",
+    "solution": "Return cleanup function from useEffect:\n\nuseEffect(() => {\n  const subscription = api.subscribe(data);\n  \n  return () => {\n    subscription.unsubscribe();\n  };\n}, [api, data]);\n\nCommon mistakes:\n- Forgetting return cleanup\n- Cleanup function outside useEffect\n- Dependencies causing re-run loop",
+    "tags": ["react", "hooks", "useeffect", "memory-leak"],
+    "outcome": "success",
+    "reuseCount": 6,
+    "createdAt": 1708800000000,
+    "updatedAt": 1709500000000,
+    "source": "local"
+  },
+  {
+    "id": "pattern-1708900000000",
+    "title": "Import JSON File in TypeScript (Module Declaration Missing)",
+    "description": "Trying to import JSON file but TypeScript complains: Cannot find module './data.json' or its corresponding type declarations.",
+    "tool": "copilot",
+    "prompt": "How do I import a JSON file in TypeScript? Getting module declaration error.",
+    "solution": "Option 1: Enable resolveJsonModule in tsconfig.json:\n\"compilerOptions\": {\n  \"resolveJsonModule\": true,\n  \"esModuleInterop\": true\n}\n\nThen import:\nimport data from './data.json';\n\nOption 2: Create type declaration file src/types/json.d.ts:\ndeclare module '*.json' {\n  const value: any;\n  export default value;\n}",
+    "tags": ["typescript", "json", "configuration", "import"],
+    "outcome": "success",
+    "reuseCount": 3,
+    "createdAt": 1708900000000,
+    "updatedAt": 1709200000000,
+    "source": "local"
+  },
+  {
+    "id": "pattern-1709000000000",
+    "title": "CSS Grid Auto-fit Not Working (Missing Container Width)",
+    "description": "Grid with auto-fit is creating one column instead of multiple. CSS grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) not working.",
+    "tool": "cursor",
+    "prompt": "My CSS grid auto-fit is not creating multiple columns. What's wrong?",
+    "solution": "The grid container needs explicit width:\n\n.grid-container {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));\n  gap: 1rem;\n  width: 100%; /* REQUIRED */\n  max-width: 1200px; /* or your preference */\n}\n\nCommon causes:\n- Container has no width (defaults to content width)\n- Parent is flex without flex-wrap\n- minmax() first value too large for container",
+    "tags": ["css", "grid", "responsive", "layout"],
+    "outcome": "success",
+    "reuseCount": 1,
+    "createdAt": 1709000000000,
+    "updatedAt": 1709000000000,
+    "source": "local",
+    "failureReason": "Initially tried without width - didn't work"
+  }
+]
