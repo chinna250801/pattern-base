@@ -2,8 +2,6 @@
 
 > A **static, GitHub Pages-ready** tool for capturing and remembering successful AI agent interactions.
 
-**Live Demo:** [chinna250801.github.io/pattern-base](https://chinna250801.github.io/pattern-base) (deploy yours in 2 minutes)
-
 ---
 
 ## What It Does
